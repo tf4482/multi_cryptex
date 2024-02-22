@@ -1,4 +1,4 @@
-# Cryptex
+# multi_cryptex
 ### An Encryption and Decryption Script
 Cryptex is a Python script that utilizes fernet from cryptography to securely encrypt and decrypt files. Using a user-provided password, Cryptex can protect any file with a strong encryption algorithm. The script is easy to use and can be run from the command line.
 
