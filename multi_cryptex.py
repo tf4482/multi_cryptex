@@ -27,22 +27,34 @@ def is_encrypted(file_path):
         return first_line.startswith(b"gAAAAA")
 
 def encrypt(file_path):
-    f = Fernet(key)
-    with open(file_path, 'rb') as f_in:
-        data = f_in.read()
-    encrypted_data = f.encrypt(data)
-    with open(file_path, 'wb') as f_out:
-        f_out.write(encrypted_data)
+    try:
+        f = Fernet(key)
+        with open(file_path, 'rb') as f_in:
+            data = f_in.read()
+        encrypted_data = f.encrypt(data)
+        with open(file_path, 'wb') as f_out:
+            f_out.write(encrypted_data)
+        print(f"File {file_path} has been encrypted.")
+    except Exception as e:
+        print(f"Encryption error: {file_path}: {e}")
 
 def decrypt(file_path):
-    f = Fernet(key)
-    with open(file_path, 'rb') as f_in:
-        data = f_in.read()
-    decrypted_data = f.decrypt(data)
-    with open(file_path, 'wb') as f_out:
-        f_out.write(decrypted_data)
+    try:
+        f = Fernet(key)
+        with open(file_path, 'rb') as f_in:
+            data = f_in.read()
+        decrypted_data = f.decrypt(data)
+        with open(file_path, 'wb') as f_out:
+            f_out.write(decrypted_data)
+        print(f"File {file_path} has been decrypted.")
+    except Exception as e:
+        print(f"Decription error: {file_path}: {e}")
 
-key = generate_key(input("Enter the Password: "))
+try:
+    key = generate_key(input("Enter password: "))
+except Exception as e:
+    print(f"Keygen error: {e}")
+    sys.exit(1)
 
 if sys.argv[1] == "enc" or sys.argv[1] == "dec":
     i = 2
@@ -50,13 +62,11 @@ else:
     i = 1
 
 if len(sys.argv) < 2:
-    print("Usage: python script.py <file_path>")
+    print("Usage: multi_cryptex.py [enc|dec] file1 [file2 ...]")
     sys.exit(1)
 
 for file_path in sys.argv[i:]:
     if is_encrypted(file_path) and sys.argv[1] != "enc":
         decrypt(file_path)
-        print("Decryption Done")
     elif sys.argv[1] != "dec":
         encrypt(file_path)
-        print("Encryption Done")
